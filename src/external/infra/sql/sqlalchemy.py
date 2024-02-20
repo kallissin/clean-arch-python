@@ -1,6 +1,11 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from src.external.ports.sql import ISqlInfra
+from contextlib import contextmanager
+from sqlalchemy.exc import IntegrityError
+
+class Base(DeclarativeBase):
+    pass
 
 class DBConnectionHandler(ISqlInfra):
     def __init__(self):
@@ -21,7 +26,11 @@ class DBConnectionHandler(ISqlInfra):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.session.close()
+        if exc_type is not None:
+            self.session.rollback()
+            self.session.close()
+        else:
+            self.session.close()
 
     def create_engine(self):
         engine = create_engine(self.__connection_string)
@@ -29,3 +38,13 @@ class DBConnectionHandler(ISqlInfra):
     
     def get_engine(self):
         return self.__engine
+
+    @classmethod
+    @contextmanager 
+    def handler_database(cls):
+        try:
+            yield
+        except IntegrityError as error:
+            pass
+        except Exception as error:
+            print(error)
