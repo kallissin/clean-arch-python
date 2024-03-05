@@ -9,3 +9,8 @@ class ISqlInfra(ABC):
     @abstractmethod
     def get_engine(self):
         pass
+    
+    @classmethod
+    @abstractmethod
+    def handler_database(self):
+        pass
