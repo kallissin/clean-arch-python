@@ -1,5 +1,6 @@
 from src.external.repository.user_repository import UserRepository
 from unittest.mock import patch
+from src.external.repository.user_repository import UserRepository
 
 class TestUserRepository:
 
