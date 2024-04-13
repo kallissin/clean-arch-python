@@ -12,3 +12,7 @@ class IUserRepository(ABC):
     @abstractmethod
     def list(self) -> List[UserEntity]:
         pass
+
+    @abstractmethod
+    def select(self, first_name: str) -> List[UserEntity]:
+        pass

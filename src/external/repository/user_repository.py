@@ -21,3 +21,10 @@ class UserRepository(IUserRepository):
                 users = db.session.query(Users).all()
 
                 return users
+
+    def select(cls, first_name) -> UserEntity:
+        with DBConnectionHandler() as db:
+            with db.handler_database():
+                users = db.session.query(Users).filter_by(first_name=first_name).all()
+                return users
+            
