@@ -8,7 +8,7 @@ from src.external.repository.in_memory_user_repository import InMemoryUserReposi
 @pytest.fixture
 def user():
     raw_data = {
-        "id": "1",
+        "id": 1,
         "first_name": "Esquilo",
         "last_name": "Silva",
         "age": 65

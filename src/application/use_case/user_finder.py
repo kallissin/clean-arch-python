@@ -35,7 +35,7 @@ class UserFinder(IUserFinder):
         response = {
             "type": "Users",
             "count": len(users),
-            "attributes": users
+            "attributes": [user.to_json for user in users]
         }
 
         return response

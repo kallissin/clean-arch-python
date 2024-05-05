@@ -9,7 +9,7 @@ class TestUserFinder:
         use_case = UserFinder(user_repository=memory_user_repository)
         response = use_case.find(user.first_name)
 
-        expected_response = {'attributes': [user], 'count': 1, 'type': 'Users'}
+        expected_response = {'attributes': [user.to_json], 'count': 1, 'type': 'Users'}
 
         assert response == expected_response
 

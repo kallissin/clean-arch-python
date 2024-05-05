@@ -2,7 +2,7 @@ from src.application.ports.user_register import IUserRegister
 from src.external.repository.user_repository import IUserRepository
 from typing import Dict
 from src.domain.entity.users import UserEntity
-
+from src.external.models.users import Users
 
 class UserRegister(IUserRegister):
     def __init__(self, user_repository: IUserRepository):
@@ -11,8 +11,8 @@ class UserRegister(IUserRegister):
 
     def register(self, first_name: str, last_name: str, age: int) -> Dict:
         self.__validate(first_name)
-        
-        user = self.__create_user(first_name, last_name, age)
+        user_entity = UserEntity(first_name=first_name, last_name=last_name, age=age)
+        user = self.__create_user(user_entity)
         
         response = self.__build(user)
 
@@ -24,16 +24,21 @@ class UserRegister(IUserRegister):
         if len(first_name) > 18:
             raise Exception("Nome muito grande")
     
-    def __create_user(self, first_name: str, last_name: str, age: int):
-        user = self.__user_repository.create(first_name, last_name, age)
+    def __create_user(self, user_entity: UserEntity) -> Users:
+        user = Users(
+            first_name=user_entity.first_name,
+            last_name=user_entity.last_name,
+            age=user_entity.age
+        )
+        user = self.__user_repository.create(user)
         
         return user
 
-    def __build(self, user: UserEntity) -> Dict:
+    def __build(self, user: Users) -> Dict:
         response = {
             "type": "Users",
             "count": 1,
-            "attributes": user
+            "attributes": user.to_json
         }
 
         return response
