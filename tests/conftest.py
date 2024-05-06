@@ -3,6 +3,8 @@ import pytest
 from unittest.mock import MagicMock
 from src.external.infra.sql.sqlalchemy import DBConnectionHandler
 from src.external.repository.in_memory_user_repository import InMemoryUserRepository
+from src.application.use_case.in_memory_user_finder import InMemoryUserFinder
+from src.application.use_case.in_memory_user_register import InMemoryUserRegister
 
 
 @pytest.fixture
@@ -17,6 +19,7 @@ def user():
     user = Users(**raw_data)
 
     return user
+
 
 @pytest.fixture
 def mock_database(monkeypatch):
@@ -35,3 +38,13 @@ def mock_database(monkeypatch):
 @pytest.fixture
 def memory_user_repository():
     return InMemoryUserRepository()
+
+
+@pytest.fixture
+def memory_user_finder():
+    return InMemoryUserFinder()
+
+
+@pytest.fixture
+def memory_user_register():
+    return InMemoryUserRegister()
