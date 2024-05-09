@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from src.external.ports.sql import ISqlInfra
 from contextlib import contextmanager
 from sqlalchemy.exc import IntegrityError
-
+from decouple import config
 class Base(DeclarativeBase):
     pass
 
@@ -11,11 +11,11 @@ class DBConnectionHandler(ISqlInfra):
     def __init__(self):
         self.__connection_string = "{}://{}:{}@{}:{}/{}".format(
             "mysql+pymysql",
-            "kelvin",
-            "123",
-            "localhost",
-            "3306",
-            "clean_database"
+            "postgres",
+            config("DATABASE_PASSWORD"),
+            "192.168.12.54",
+            "5432",
+            config("DATABASE_NAME")
         )
         self.__engine = self.create_engine()
         self.session = None
